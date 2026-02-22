@@ -1,0 +1,31 @@
+fn test(a) {
+  if a == 30 {
+    return 100
+  } else {
+    return 200
+  }
+}
+
+fn fibonacci(n) {
+  if n <= 1 {
+    return n
+  } else {
+    return fibonacci(n-1) + fibonacci(n-2)
+  }
+}
+
+print(test(15));
+print(test(30));
+
+print(9 > 8);
+print(3 == 7);
+print(5 + 2 > 1);
+
+print(fibonacci(7));
+
+
+let i = 0;
+while i < 5 {
+    print(i);
+    i = i + 1
+}

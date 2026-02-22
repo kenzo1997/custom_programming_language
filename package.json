@@ -1,0 +1,17 @@
+{
+  "name": "custom_programming_language",
+  "version": "1.0.0",
+  "description": "Mini Programming Language Interpreter 1. Overview",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^25.2.2",
+    "typescript": "^5.9.3"
+  }
+}
