@@ -9,7 +9,9 @@ A custom programming language interpreter built with TypeScript, featuring a lex
 - **Variables**: Mutable (`let`) and immutable (`const`) variable declarations
 - **Functions**: First-class functions with closures and return statements
 - **Objects**: Object literals with property access (dot notation and computed)
-- **Control Flow**: If-else statements with expression-based conditions
+- **Control Flow**:
+  - If-else statements with expression-based conditions
+  - While loops for iterative execution
 - **Operators**: 
   - Arithmetic: `+`, `-`, `*`, `/`, `%`
   - Comparison: `<`, `>`, `<=`, `>=`, `==`, `!=`
@@ -122,6 +124,17 @@ if x > 5 && x < 15 {
 }
 ```
 
+### While Loops
+
+```javascript
+let i = 0;
+
+while i < 5 {
+    print(i);
+    i = i + 1;
+}
+```
+
 ### Operators
 
 **Arithmetic:**
@@ -228,18 +241,12 @@ Values are evaluated as truthy/falsy in conditions:
 - Variables are looked up in current scope, then parent scopes
 - Constants cannot be reassigned after declaration
 
-## Known Issues
-
-- Variable `tine` should be `time` in environment.ts
-- Semicolons are required after most statements
-- Error handling could be improved (some errors call `process.exit()`)
-- Limited type checking at runtime
 
 ## Future Enhancements
 
 - [ ] String type and string operations
 - [ ] Array/list data structure
-- [ ] For/while loops
+- [ ] For loops
 - [ ] Better error messages with line numbers
 - [ ] Type checking
 - [ ] Standard library expansion
