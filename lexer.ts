@@ -58,8 +58,12 @@ function token(value = "", type: TokenType): Token {
 	return { value, type };
 }
 
-function isalpha(src: string): boolean {
-	return src.toUpperCase() != src.toLowerCase();
+function isIdentStart(src: string): boolean {
+    return src.toUpperCase() != src.toLowerCase();
+}
+
+function isIdentChar(src: string): boolean {
+    return src.toUpperCase() != src.toLowerCase() || /[0-9_]/.test(src);
 }
 
 function isint(str: string) {
@@ -143,11 +147,11 @@ export function tokenize(sourceCode: string): Token[] {
 			tokens.push(token(num, TokenType.Number));
 
 		// Handle identifiers / keywords
-		} else if(isalpha(current)) {
-			let ident = "";
-			while(src.length > 0 && isalpha(src[0])) ident += src.shift();
-			const reserved = KEYWORDS[ident];
-			tokens.push(token(ident, typeof reserved === "number" ? reserved : TokenType.Identifier));
+		} else if(isIdentStart(current)) {
+    			let ident = "";
+    			while(src.length > 0 && isIdentChar(src[0])) ident += src.shift();
+    			const reserved = KEYWORDS[ident];
+    			tokens.push(token(ident, typeof reserved === "number" ? reserved : TokenType.Identifier));
 
 		// Skip whitespace
 		} else if(isSkippable(current)) {

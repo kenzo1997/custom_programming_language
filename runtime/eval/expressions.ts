@@ -1,4 +1,4 @@
-import { NumberVal, RuntimeVal, MK_NULL, ObjectVal, NativeFnValue, FunctionValue, MK_NUMBER, ReturnValue, MK_STRING, MK_ARRAY, ArrayVal } from "./../values";
+import { NumberVal, RuntimeVal, MK_NULL, ObjectVal, NativeFnValue, FunctionValue, MK_NUMBER, ReturnValue, MK_STRING, MK_ARRAY, ArrayVal, StringVal } from "./../values";
 import { AssignmentExpr, BinaryExpr, CallExpr, Identifier, ObjectLiteral, ArrayLiteral, MemberExpr } from "../../ast"
 import { evaluate } from "./../interpreter";
 import Environment from "./../environment";
@@ -214,6 +214,13 @@ export function eval_member_expr(node: MemberExpr, env: Environment): RuntimeVal
         const arr = obj as ArrayVal;
         const index = evaluate(node.property, env) as NumberVal;
         return arr.elements[index.value] ?? MK_NULL();
+    }
+
+    if(obj.type === "string") {  
+        const str = obj as StringVal;
+        const index = (evaluate(node.property, env) as NumberVal).value;
+        const char = str.value[index];
+        return char !== undefined ? MK_STRING(char) : MK_NULL();
     }
 
     if(obj.type === "object") {
