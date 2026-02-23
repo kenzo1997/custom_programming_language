@@ -57,5 +57,17 @@ for num in nums {
 nums[0] = 99;
 print(nums[0]);
 
+print(len(nums));       
+push(nums, 40);
+print(len(nums));      
+print(last(nums));      
+print(first(nums));    
+
+let removed = pop(nums);
+print(removed);        
+print(len(nums));
+
 let words = ["hello", "world"];
 print(words[1]);
+
+print(len(words[0]));

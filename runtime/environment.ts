@@ -1,4 +1,4 @@
-import { MK_BOOL, MK_NULL, MK_NATIVE_FN, RuntimeVal, MK_NUMBER } from "./values";
+import { MK_BOOL, MK_NULL, MK_NATIVE_FN, RuntimeVal, MK_NUMBER, ArrayVal, StringVal  } from "./values";
 
 export function createGlobalEnv() {
 	const env = new Environment();
@@ -16,7 +16,64 @@ export function createGlobalEnv() {
 		}), 
 		true
 	);
+
+	// len(arr) - returns length of array or string
+	env.declareVar(
+	    "len",
+	    MK_NATIVE_FN((args, scope) => {
+	        const val = args[0];
+	        if(val.type === "array") return MK_NUMBER((val as ArrayVal).elements.length);
+	        if(val.type === "string") return MK_NUMBER((val as StringVal).value.length);
+	        throw "len() expects an array or string";
+	    }),
+	    true
+	);
 	
+	// push(arr, val) - appends value to end of array
+	env.declareVar(
+	    "push",
+	    MK_NATIVE_FN((args, scope) => {
+	        if(args[0].type !== "array") throw "push() expects an array as first argument";
+	        const arr = args[0] as ArrayVal;
+	        arr.elements.push(args[1]);
+	        return arr;
+	    }),
+	    true
+	);
+	
+	// pop(arr) - removes and returns last element
+	env.declareVar(
+	    "pop",
+	    MK_NATIVE_FN((args, scope) => {
+	        if(args[0].type !== "array") throw "pop() expects an array";
+	        const arr = args[0] as ArrayVal;
+	        return arr.elements.pop() ?? MK_NULL();
+	    }),
+	    true
+	);
+	
+	// first(arr) - returns first element
+	env.declareVar(
+	    "first",
+	    MK_NATIVE_FN((args, scope) => {
+	        if(args[0].type !== "array") throw "first() expects an array";
+	        const arr = args[0] as ArrayVal;
+	        return arr.elements[0] ?? MK_NULL();
+	    }),
+	    true
+	);
+	
+	// last(arr) - returns last element
+	env.declareVar(
+	    "last",
+	    MK_NATIVE_FN((args, scope) => {
+	        if(args[0].type !== "array") throw "last() expects an array";
+	        const arr = args[0] as ArrayVal;
+	        return arr.elements[arr.elements.length - 1] ?? MK_NULL();
+	    }),
+	    true
+	);
+
 	function timeFunction(args: RuntimeVal[], env: Environment) {
 		return MK_NUMBER(Date.now());
 	}
