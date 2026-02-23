@@ -1,5 +1,5 @@
-import { RuntimeVal, MK_NULL, FunctionValue, MK_RETURN, NumberVal, BooleanVal } from "./../values";
-import { FunctionDeclaration, Program, VarDeclaration, ReturnStmt, IfStmt, WhileStmt } from "../../ast"
+import { RuntimeVal, MK_NULL, FunctionValue, MK_RETURN, NumberVal, BooleanVal, ArrayVal } from "./../values";
+import { FunctionDeclaration, Program, VarDeclaration, ReturnStmt, IfStmt, WhileStmt, ForInStmt } from "../../ast"
 import { evaluate } from "./../interpreter";
 import Environment from "./../environment";
 
@@ -96,6 +96,34 @@ export function eval_while_stmt(stmt: WhileStmt, env: Environment): RuntimeVal {
 
             if (evaluated.type === "return") {
                 return evaluated; // bubble return up through loops
+            }
+
+            result = evaluated;
+        }
+    }
+
+    return result;
+}
+
+export function eval_for_in_stmt(stmt: ForInStmt, env: Environment): RuntimeVal {
+    const iterable = evaluate(stmt.iterable, env);
+
+    if(iterable.type !== "array") {
+        throw `For-in loop expected an array, got '${iterable.type}'`;
+    }
+
+    const arr = iterable as ArrayVal;
+    let result: RuntimeVal = MK_NULL();
+
+    for(const element of arr.elements) {
+        const scope = new Environment(env);
+        scope.declareVar(stmt.identifier, element, false);
+
+        for(const s of stmt.body) {
+            const evaluated = evaluate(s, scope);
+
+            if(evaluated.type === "return") {
+                return evaluated; // bubble return up
             }
 
             result = evaluated;

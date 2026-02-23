@@ -30,6 +30,8 @@ export enum TokenType {
         And,          
         Or,          
         Not,
+	For,
+	In,
 	While,
 	String,
 	EOF, // Signified the end of file}
@@ -43,6 +45,8 @@ const KEYWORDS: Record<string, TokenType> = {
 	if: TokenType.If,
 	else: TokenType.Else,
 	while: TokenType.While,
+	for: TokenType.For,
+	in: TokenType.In,
 }
 
 export interface Token {

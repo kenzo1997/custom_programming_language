@@ -14,10 +14,11 @@ export type NodeType =
 	| "StringLiteral"
 	| "ArrayLiteral"
 	| "Identifier" 
-	| "ReturnStmt" 
+	| "ReturnStmt"
 	| "ExprStmt" 
 	| "IfStmt"
 	| "WhileStmt"
+	| "ForInStmt"
 	| "BinaryExpr";
 
 export interface Stmt {
@@ -123,4 +124,11 @@ export interface StringLiteral extends Expr {
 export interface ArrayLiteral extends Expr {
     kind: "ArrayLiteral";
     elements: Expr[];
+}
+
+export interface ForInStmt extends Stmt {
+    kind: "ForInStmt";
+    identifier: string;
+    iterable: Expr;
+    body: Stmt[];
 }

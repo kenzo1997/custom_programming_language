@@ -1,4 +1,4 @@
-import {Stmt, Program, Expr, BinaryExpr, AssignmentExpr, NumericLiteral, Identifier, VarDeclaration, Property, ObjectLiteral, CallExpr, MemberExpr, FunctionDeclaration, ReturnStmt, ExprStmt, IfStmt, WhileStmt, StringLiteral, ArrayLiteral} from "./ast";
+import {Stmt, Program, Expr, BinaryExpr, AssignmentExpr, NumericLiteral, Identifier, VarDeclaration, Property, ObjectLiteral, CallExpr, MemberExpr, FunctionDeclaration, ReturnStmt, ExprStmt, IfStmt, WhileStmt, StringLiteral, ArrayLiteral, ForInStmt} from "./ast";
 import { tokenize, Token, TokenType } from "./lexer";
 
 export default class Parser {
@@ -76,6 +76,8 @@ export default class Parser {
         			return this.parse_return_stmt();
 			case TokenType.While:
     				return this.parse_while_stmt();
+			case TokenType.For:
+    				return this.parse_for_in_stmt();
         		default: {
         			const expr = this.parse_expr();
         
@@ -458,6 +460,36 @@ export default class Parser {
 	        condition,
 	        body,
 	    } as WhileStmt;
+	}
+
+
+	private parse_for_in_stmt(): Stmt {
+	    this.eat(); // consume 'for'
+	
+	    const identifier = this.expect(
+	        TokenType.Identifier,
+	        "Expected identifier after 'for'"
+	    ).value;
+	
+	    this.expect(TokenType.In, "Expected 'in' after identifier in for loop");
+	
+	    const iterable = this.parse_expr();
+	
+	    this.expect(TokenType.OpenBrace, "Expected '{' after iterable in for loop");
+	
+	    const body: Stmt[] = [];
+	    while(this.at().type !== TokenType.CloseBrace && this.not_eof()) {
+	        body.push(this.parse_stmt());
+	    }
+	
+	    this.expect(TokenType.CloseBrace, "Expected '}' after for loop body");
+	
+	    return {
+	        kind: "ForInStmt",
+	        identifier,
+	        iterable,
+	        body,
+	    } as ForInStmt;
 	}
 
 	private at() {

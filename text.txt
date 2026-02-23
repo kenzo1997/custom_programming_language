@@ -50,14 +50,12 @@ let nums = [10, 20, 30, 40, 50];
 print(nums[0]);   
 print(nums[4]); 
 
+for num in nums {
+   print(num);
+}
+
 nums[0] = 99;
 print(nums[0]);
 
 let words = ["hello", "world"];
 print(words[1]);
-
-let j = 0;
-while j < 5 {
-    print(nums[j]);
-    j = j + 1;
-}
