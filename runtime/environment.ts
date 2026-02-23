@@ -80,4 +80,10 @@ export default class Environment {
 
 		return this.parent.resolve(varname);
 	}
+
+	public updateVar(varname: string, value: RuntimeVal): RuntimeVal {
+    		const env = this.resolve(varname);
+    		env.variables.set(varname, value);
+    		return value;
+	}
 }

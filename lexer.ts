@@ -31,6 +31,7 @@ export enum TokenType {
         Or,          
         Not,
 	While,
+	String,
 	EOF, // Signified the end of file}
 }
 
@@ -96,6 +97,14 @@ export function tokenize(sourceCode: string): Token[] {
 			tokens.push(token(src.shift(), TokenType.Colon));
 		} else if(current == '.') {
 			tokens.push(token(src.shift(), TokenType.Dot));
+		} else if(current == '"') {
+		    src.shift(); // consume opening quote
+		    let str = "";
+		    while(src.length > 0 && src[0] !== '"') {
+		        str += src.shift();
+		    }
+		    src.shift(); // consume closing quote
+		    tokens.push(token(str, TokenType.String));
 
 		// Handle multi-character operators first
 		} else if(current == '=' && next == '=') {

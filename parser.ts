@@ -1,4 +1,4 @@
-import {Stmt, Program, Expr, BinaryExpr, AssignmentExpr, NumericLiteral, Identifier, VarDeclaration, Property, ObjectLiteral, CallExpr, MemberExpr, FunctionDeclaration, ReturnStmt, ExprStmt, IfStmt, WhileStmt} from "./ast";
+import {Stmt, Program, Expr, BinaryExpr, AssignmentExpr, NumericLiteral, Identifier, VarDeclaration, Property, ObjectLiteral, CallExpr, MemberExpr, FunctionDeclaration, ReturnStmt, ExprStmt, IfStmt, WhileStmt, StringLiteral, ArrayLiteral} from "./ast";
 import { tokenize, Token, TokenType } from "./lexer";
 
 export default class Parser {
@@ -359,8 +359,26 @@ export default class Parser {
 					"Unexpected toekn found inside parenthesised expression. Expected closing paranthesis."
 				); // closing parem 
 				return value;
-			case TokenType.OpenBrace:   // ✅ ADD THIS
+			case TokenType.OpenBrace: 
 				return this.parse_object_expr();
+			case TokenType.OpenBracket: 
+    				this.eat(); // consume '['
+   				const elements: Expr[] = [];
+
+			        while(this.at().type !== TokenType.CloseBracket && this.not_eof()) {
+			            elements.push(this.parse_expr());
+			            if(this.at().type === TokenType.Comma) {
+			                this.eat(); // consume ','
+			            }
+			        }
+			    
+			        this.expect(TokenType.CloseBracket, "Expected ']' after array elements");
+			        return { kind: "ArrayLiteral", elements } as ArrayLiteral;
+			case TokenType.String:
+   				return {
+   			     	    kind: "StringLiteral",
+   			     	    value: this.eat().value,
+   			 	} as StringLiteral;
 			default:
 				console.log("Unexpected token found during parsing", this.at());
 				throw new Error("Unexpected token: " + JSON.stringify(this.at()));

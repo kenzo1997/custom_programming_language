@@ -11,6 +11,8 @@ export type NodeType =
 	| "Property"
 	| "ObjectLiteral"
 	| "NumericLiteral" 
+	| "StringLiteral"
+	| "ArrayLiteral"
 	| "Identifier" 
 	| "ReturnStmt" 
 	| "ExprStmt" 
@@ -111,4 +113,14 @@ export interface WhileStmt extends Stmt {
   kind: "WhileStmt";
   condition: Expr;
   body: Stmt[];
+}
+
+export interface StringLiteral extends Expr {
+    kind: "StringLiteral";
+    value: string;
+}
+
+export interface ArrayLiteral extends Expr {
+    kind: "ArrayLiteral";
+    elements: Expr[];
 }

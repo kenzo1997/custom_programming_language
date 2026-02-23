@@ -8,6 +8,8 @@ export type ValueType =
 	| "object" 
 	| "native-fn"
 	| "function"
+	| "string"
+	| "array"
 	| "return";
 
 export interface RuntimeVal {
@@ -73,4 +75,22 @@ export interface ReturnValue extends RuntimeVal {
 
 export function MK_RETURN(value: RuntimeVal): ReturnValue {
   return { type: "return", value };
+}
+
+export interface StringVal extends RuntimeVal {
+    type: "string";
+    value: string;
+}
+
+export function MK_STRING(s = "") {
+    return { type: "string", value: s } as StringVal;
+}
+
+export interface ArrayVal extends RuntimeVal {
+    type: "array";
+    elements: RuntimeVal[];
+}
+
+export function MK_ARRAY(elements: RuntimeVal[] = []): ArrayVal {
+    return { type: "array", elements };
 }

@@ -1,8 +1,8 @@
-import { NumberVal, ValueType, RuntimeVal, MK_NULL } from "./values"
-import { AssignmentExpr, BinaryExpr, CallExpr, FunctionDeclaration, Identifier, NodeType, NumericLiteral, ObjectLiteral, Program, Stmt, VarDeclaration, ReturnStmt, ExprStmt, IfStmt, WhileStmt } from "../ast"
+import { NumberVal, ValueType, RuntimeVal, MK_NULL, StringVal, ArrayVal } from "./values"
+import { AssignmentExpr, BinaryExpr, CallExpr, FunctionDeclaration, Identifier, NodeType, NumericLiteral, ObjectLiteral, Program, Stmt, VarDeclaration, ReturnStmt, ExprStmt, IfStmt, WhileStmt, StringLiteral, ArrayLiteral, MemberExpr } from "../ast"
 import Environment from "./environment";
 import { eval_program, eval_var_declaration, eval_function_declaration, eval_return_stmt, eval_if_stmt, eval_while_stmt } from "./eval/staments";
-import { eval_identifier, evaluate_binary_expr, eval_assignment, eval_object_expr, eval_call_expr } from "./eval/expressions";
+import { eval_identifier, evaluate_binary_expr, eval_assignment, eval_object_expr, eval_call_expr, eval_member_expr, eval_array_literal } from "./eval/expressions";
 
 export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
 	switch(astNode.kind) {
@@ -36,6 +36,15 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
 			return evaluate((astNode as ExprStmt).expr, env);
 		case "WhileStmt":
     			return eval_while_stmt(astNode as WhileStmt, env);
+		case "ArrayLiteral":
+    			return eval_array_literal(astNode as ArrayLiteral, env);
+		case "MemberExpr":
+    			return eval_member_expr(astNode as MemberExpr, env);
+		case "StringLiteral":
+    			return {
+        		    type: "string",
+        		    value: (astNode as StringLiteral).value,
+    			} as StringVal;
 		// Handles unimplemented ast types as error.
 		default:
 		    console.error("This AST Node has not yet been setup for interpertation.", astNode);

@@ -29,3 +29,35 @@ while i < 5 {
     print(i);
     i = i + 1
 }
+
+
+let name = "world";
+let greeting = "Hello, " + name + "!";
+print(greeting);
+
+fn greet(n) {
+    return "Hey " + n
+}
+
+print(greet("Kenzo"));
+
+if greeting == "Hello, world!" {
+    print("strings compare correctly");
+}
+
+
+let nums = [10, 20, 30, 40, 50];
+print(nums[0]);   
+print(nums[4]); 
+
+nums[0] = 99;
+print(nums[0]);
+
+let words = ["hello", "world"];
+print(words[1]);
+
+let j = 0;
+while j < 5 {
+    print(nums[j]);
+    j = j + 1;
+}
